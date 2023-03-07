@@ -3,8 +3,10 @@ package org.example.services;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.example.converters.StringToPersonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -14,6 +16,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FileProcessorService {
     private final Logger log = LoggerFactory.getLogger(FileProcessorService.class);
+
+    @Autowired
+    private StringToPersonConverter stringToPersonConverter;
 
     public void Process(String filePath) throws IOException {
         if(filePath.isBlank())
@@ -31,7 +36,8 @@ public class FileProcessorService {
             while (it.hasNext())
             {
                 String line = it.nextLine();
-                //Now process each line.
+                //Convert string line to person object
+                var person = stringToPersonConverter.convert(line);
             }
         }
         catch(Exception ex)
