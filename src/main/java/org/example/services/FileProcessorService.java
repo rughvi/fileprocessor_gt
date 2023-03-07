@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.example.converters.StringToPersonConverter;
+import org.example.processors.PersonProcessorInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,8 @@ public class FileProcessorService {
 
     @Autowired
     private StringToPersonConverter stringToPersonConverter;
-
+    @Autowired
+    private PersonProcessorInitializer personProcessorInitializer;
     public void Process(String filePath) throws IOException {
         if(filePath.isBlank())
         {
@@ -38,6 +40,12 @@ public class FileProcessorService {
                 String line = it.nextLine();
                 //Convert string line to person object
                 var person = stringToPersonConverter.convert(line);
+
+                //send person to the chain of processors.
+                if(personProcessorInitializer.GetRootProcessor() != null)
+                {
+                    personProcessorInitializer.GetRootProcessor().Process(person);
+                }
             }
         }
         catch(Exception ex)

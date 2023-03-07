@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.configuration.FileProcessorConfiguration;
 import org.example.converters.StringToPersonConverter;
+import org.example.processors.PersonProcessorInitializer;
 import org.example.services.FileProcessorService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,10 +22,10 @@ public class FileProcessorServiceTests {
 
     @Mock
     private FileProcessorConfiguration fileProcessorConfiguration;
-
+    @Mock
+    private PersonProcessorInitializer personProcessorInitializer;
     @InjectMocks
     private StringToPersonConverter stringToPersonConverter = Mockito.spy(new StringToPersonConverter());
-
     @InjectMocks
     private FileProcessorService _fileProcessorService;
 
